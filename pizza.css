@@ -1,3 +1,10 @@
-body{
+canvas{
     background-image: url(/photos/checkered_floor.webp);
+}
+body{
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    background-color: maroon;
+    
 }
