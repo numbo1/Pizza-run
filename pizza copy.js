@@ -3,44 +3,50 @@ let board;
 let boardWidth = window.innerWidth;
 let boardHeight = window.innerHeight;
 let context;
+var imgRatio = 0.5;
 
-//Freddy
 let freddyWidth = 100;
 let freddyHeight = 150;
-let freddyX = boardWidth/9;
-let freddyY = boardHeight/2
-let freddyImg;
 
-let freddy = {
-    x : freddyX,
-    y : freddyY,
-    width : freddyWidth,
-    height : freddyHeight
 
+class Sprite {
+
+    constructor(spritePath, width, height) {
+        this.src = spritePath;
+        this.width = width;
+        this.height = height;
+        this.image = new Image();
+       
+        this.loaded = false;
+
+        this.image.onload = () => {
+            this.loaded = true;
+        };
+
+        this.image.src = spritePath;
+    }
+
+    draw(context, x, y) {
+        console.log("sprite.draw");
+        console.log(this.loaded);
+        if (this.loaded) {
+            context.drawImage(this.image, x, y, this.width, this.height);
+        }
+    }
 }
 
-//Plum Freddy
-let freddyPWidth = 100;
-let freddyPHeight = 150;
-let freddyPX = boardWidth/1.1;
-let freddyPY = boardHeight/2
-let freddyPImg;
 
-let freddyP = {
-    x : freddyPX,
-    y : freddyPY,
-    width : freddyPWidth,
-    height : freddyPHeight
-}
+
 
 //Pizzas
 let randomNumber = parseInt(Math.round(Math.random() * 2) + Math.random() + 1);
-let pizzaArray = ["/photos/pizza1.png", "/photos/pizza2.png"]; 
+let pizzaArray = ["/photos/pepPizza.png", "/photos/skinke.png"]; 
 let pizzaHeight = 70;
 let pizzaWidth = 70;
 let pizzaX = boardWidth/randomNumber;
 let pizzaY = boardHeight/randomNumber;
 let pizzaImg;
+let antallPizza = 6;
 
 let pizza = {
     x : pizzaX,
@@ -48,6 +54,7 @@ let pizza = {
     width : pizzaWidth,
     height : pizzaHeight
 }
+
 function randomPizza() {
     let randomPizzaIndex = Math.floor(Math.random() * pizzaArray.length);
     let randomPizzaUrl = pizzaArray[randomPizzaIndex];
@@ -69,34 +76,62 @@ window.onload = function(){
     board.width = boardWidth;
     context = board.getContext("2d"); //Drawing on the canvas
 
-    //load the images
+
     //Freddy
-    freddyImg = new Image();
-    freddyImg.src = "/photos/freddy.png";
-    freddyImg.onload = function(){
-        context.drawImage(freddyImg, freddy.x, freddy.y, freddy.width, freddy.height);
+    let freddy = new Sprite("/photos/freddy.png", freddyWidth, freddyHeight);
+    console.log(freddy);
+    freddy.image.onload = () => {
+        freddy.draw(context, 50, board.height/2)
+    };
+    
 
+    //Plum Freddy
+    let freddyP = new Sprite("/photos/freddyP.png", freddyWidth, freddyHeight);
+
+
+
+    //Pizza generator
+    for (let i = 0; i < antallPizza; i++) {
+        let randomPizza = Math.floor(Math.random() * 4);
+        
     }
 
-    //Freddy P
-    freddyPImg = new Image();
-    freddyPImg.src = "/photos/freddyP.png";
-    freddyPImg.onload = function(){
-        context.drawImage(freddyPImg, freddyP.x, freddyP.y, freddyP.width, freddyP.height);
-
+    function spawn(sprite, x, y) {
+        console.log("Sprite executed");
+        context.drawImage(sprite.img, x, y, sprite.width * imgRatio, sprite.height * imgRatio);
     }
 
-    //Pizzas
-    function pizzaSpawn() {
-        pizzaImg = new Image();
-    pizzaImg.src = randomPizza();
-    requestAnimationFrame(update);
-    pizzaImg.onload = function(){
-        context.drawImage(pizzaImg, pizza.x, pizza.y, pizza.width, pizza.height);
+    // //Pizzas
+    // function pizzaSpawner() {
+        
+    //     let x = Math.floor(Math.random() * board.width);
+    //     let y = Math.floor(Math.random() * board.height);
 
-    }
-    }
-    pizzaSpawn()
+    //     for (let index = 0; index < 5; index++) {
+    //         let pizzaNum = Math.floor(Math.random() * 3);
+    //         console.log(pizzaNum);
+    //         let p = context.drawImage("pizza" + pizzaNum + ".png")
+    //         if (!x - p.width)
+    //             x = x - p.width;
+    //         }
+
+    //         if (!y < p.height) {
+    //             y = y - p.height;
+    //         }
+    //         if (!detectCollision()) {
+                
+    //         }
+    // }
+
+    // function pizzaSpawn() {
+    //     pizzaImg = new Image();
+    // pizzaImg.src = randomPizza();
+    // pizzaImg.onload = function(){
+    //     context.drawImage(pizzaImg, pizza.x, pizza.y, pizza.width, pizza.height);
+
+    // }
+    // }
+    // pizzaSpawn()
 
 
     function stopMoving() {
@@ -164,9 +199,8 @@ function update() {
         context.font = "100px Arial"
         document.getElementById("board").style.backgroundImage = "url('black.jpg')"
         context.fillStyle = "red";
-        context.textAlign = "center";
-        context.fillText("GAME OVER", boardWidth/2, 400);
-        context.fillText("Press R to restart",boardWidth/2, 500);
+        context.fillText("GAME OVER", 600, 400);
+        context.fillText("Press R to restart", 550, 500);
     }
 }
 
@@ -176,20 +210,20 @@ function keyPressed(event) {
     switch (event.key) {
         case "w":
             //Move upwards
-            velocityY = -1.1;
+            velocityY = -2;
             break;
         
         case "s":
             //Move downwards
-            velocityY = 1.1;
+            velocityY = 2;
             break;
 
         case "a":
-            velocityX = -1.1;
+            velocityX = -2;
             break;
 
         case "d":
-            velocityX = 1.1;
+            velocityX = 2;
             break;
         
         case "ArrowUp":
