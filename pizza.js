@@ -4,10 +4,15 @@ let boardWidth = window.innerWidth;
 let boardHeight = window.innerHeight;
 let context;
 
+//sound
+let bgMusic = new Audio('/music/music.mp3');
+
+
+
 //Freddy
 let freddyWidth = 100;
 let freddyHeight = 150;
-let freddyX = boardWidth/9;
+let freddyX = boardWidth/18;
 let freddyY = boardHeight/2
 let freddyImg;
 
@@ -34,12 +39,12 @@ let freddyP = {
 }
 
 //Pizzas
-let randomNumber = parseInt(Math.round(Math.random() * 2) + Math.random() + 1);
-let pizzaArray = ["/photos/pizza1.png", "/photos/pizza2.png"]; 
+let randomNumber = Math.floor(Math.random() * 100)
+let pizzaArray = ["/photos/pizza1.png", "/photos/pizza2.png", "/photos/pizza3.png"]; 
 let pizzaHeight = 70;
 let pizzaWidth = 70;
-let pizzaX = boardWidth/randomNumber;
-let pizzaY = boardHeight/randomNumber;
+let pizzaX = boardWidth/Math.floor(Math.random() * 50);
+let pizzaY = boardHeight/Math.floor(Math.random() * 100);
 let pizzaImg;
 
 let pizza = {
@@ -48,9 +53,43 @@ let pizza = {
     width : pizzaWidth,
     height : pizzaHeight
 }
+//Pizza 1
+let pizza1Array = ["/photos/pizza4.png", "/photos/pizza5.png", "/photos/pizza6.png"]
+let pizza1X = boardWidth/Math.floor(Math.random() * 50);
+let pizza1Y = boardHeight/Math.floor(Math.random() * 100);
+let pizza1 = {
+    x : pizza1X,
+    y : pizza1Y,
+    width : 50,
+    height : 50
+}
+let pizza1Img;
+
+// Pizza 2
+let pizza2Array = ["/photos/pizza7.png"]
+let pizza2X = boardWidth/Math.floor(Math.random() * 50);
+let pizza2Y = boardHeight/Math.floor(Math.random() * 100);
+let pizza2 = {
+    x : pizza2X,
+    y : pizza2Y,
+    width : pizzaWidth,
+    height : pizzaHeight
+}
+let pizza2Img;
+
 function randomPizza() {
     let randomPizzaIndex = Math.floor(Math.random() * pizzaArray.length);
     let randomPizzaUrl = pizzaArray[randomPizzaIndex];
+    return randomPizzaUrl;
+}
+function randomPizza1() {
+    let randomPizzaIndex = Math.floor(Math.random() * pizza1Array.length);
+    let randomPizzaUrl = pizza1Array[randomPizzaIndex];
+    return randomPizzaUrl;
+}
+function randomPizza2() {
+    let randomPizzaIndex = Math.floor(Math.random() * pizza2Array.length);
+    let randomPizzaUrl = pizza2Array[randomPizzaIndex];
     return randomPizzaUrl;
 }
 
@@ -68,7 +107,7 @@ window.onload = function(){
     board.height = boardHeight;
     board.width = boardWidth;
     context = board.getContext("2d"); //Drawing on the canvas
-
+    bgMusic.play()
     //load the images
     //Freddy
     freddyImg = new Image();
@@ -89,14 +128,31 @@ window.onload = function(){
     //Pizzas
     function pizzaSpawn() {
         pizzaImg = new Image();
-    pizzaImg.src = randomPizza();
-    requestAnimationFrame(update);
-    pizzaImg.onload = function(){
-        context.drawImage(pizzaImg, pizza.x, pizza.y, pizza.width, pizza.height);
-
+        pizzaImg.src = randomPizza();
+        requestAnimationFrame(update);
+        pizzaImg.onload = function(){
+            context.drawImage(pizzaImg, pizza.x, pizza.y, pizza.width, pizza.height);
+        }
     }
+    function pizza1Spawn() {
+        pizza1Img = new Image();
+        pizza1Img.src = randomPizza1();
+        requestAnimationFrame(update);
+        pizza1Img.onload = function(){
+            context.drawImage(pizza1Img, pizza1.x, pizza1.y, pizza1.width, pizza1.height);
+        }
+    }
+    function pizza2Spawn() {
+        pizza2Img = new Image();
+        pizza2Img.src = randomPizza2();
+        requestAnimationFrame(update);
+        pizza2Img.onload = function(){
+            context.drawImage(pizza2Img, pizza2.x, pizza2.y, pizza2.width, pizza2.height);
+        }
     }
     pizzaSpawn()
+    pizza1Spawn()
+    pizza2Spawn()
 
 
     function stopMoving() {
@@ -114,44 +170,65 @@ window.onload = function(){
 function update() {
     requestAnimationFrame(update);
     if (gameOver) {
+        bgMusic.pause()
+        let mySound = new Audio('/music/game_over.wav')
+        mySound.play()
         return;
     }
     context.clearRect(0, 0, board.width, board.height);
 
     //Freddy
+    let freddyBottomLimit = boardHeight - freddyHeight;
+    let freddyRightLimit = boardWidth - freddyWidth;
+
     freddy.y += velocityY;
-    freddy.y = Math.max(freddy.y + velocityY, 0);
-    freddy.y = Math.min(freddy.y + velocityY, 890)
+    freddy.y = Math.min(Math.max(freddy.y + velocityY, 0), freddyBottomLimit);
     freddy.x += velocityX;
-    freddy.x = Math.max(freddy.x + velocityX, 0);
-    freddy.x = Math.min(freddy.x + velocityX, 1860);
+    freddy.x = Math.min(Math.max(freddy.x + velocityX, 0), freddyRightLimit);
     context.drawImage(freddyImg, freddy.x, freddy.y, freddy.width, freddy.height);
 
     //Freddy P
+    let freddyPBottomLimit = boardHeight - freddyPHeight;
+    let freddyPRightLimit = boardWidth - freddyPWidth;
+
     freddyP.y += velocityYP;
-    freddyP.y = Math.max(freddyP.y + velocityYP, 0);
-    freddyP.y = Math.min(freddyP.y + velocityYP, 890)
+    freddyP.y = Math.min(Math.max(freddyP.y + velocityYP, 0), freddyPBottomLimit);
     freddyP.x += velocityXP;
-    freddyP.x = Math.max(freddyP.x + velocityXP, 0);
-    freddyP.x = Math.min(freddyP.x + velocityXP, 1860);
+    freddyP.x = Math.min(Math.max(freddyP.x + velocityXP, 0), freddyPRightLimit);
     context.drawImage(freddyPImg, freddyP.x, freddyP.y, freddyP.width, freddyP.height);
 
     // Draw pizza only if not collided
-    if (!detectCollision(freddy, pizza)) {
+    if (!detectCollision(freddy, pizza) && !detectCollision(freddy, pizza1) && !detectCollision(freddy, pizza2)) {
         context.drawImage(pizzaImg, pizza.x, pizza.y, pizza.width, pizza.height);
-    } else {
-        // Increment score and regenerate pizza
-        score += 1;
+        context.drawImage(pizza1Img, pizza1.x, pizza1.y, pizza1.width, pizza1.height);
+        context.drawImage(pizza2Img, pizza2.x, pizza2.y, pizza2.width, pizza2.height);
+    } else if (detectCollision(freddy, pizza)) {
+        score += 2;
         pizza.x = Math.random() * (boardWidth - pizzaWidth);
         pizza.y = Math.random() * (boardHeight - pizzaHeight);
+    } else if (detectCollision(freddy, pizza1)) {
+        score += 1;
+        pizza1.x = Math.random() * (boardWidth - 50);
+        pizza1.y = Math.random() * (boardHeight - 50);
+    } else if (detectCollision(freddy, pizza2)) {
+        gameOver = true;
     }
+    
 
-    //Freddy P colision
+    //Freddy P collision
     if (detectCollision(freddyP, freddy)) {
         gameOver = true;
     } else if (detectCollision(freddyP, pizza)) {
         pizza.x = Math.random() * (boardWidth - pizzaWidth);
         pizza.y = Math.random() * (boardHeight - pizzaHeight);
+    } else if (detectCollision(freddyP, pizza1)) {
+        pizza1.x = Math.random() * (boardWidth - pizzaWidth);
+        pizza1.y = Math.random() * (boardHeight - pizzaHeight);
+    } else if (detectCollision(freddyP, pizza2)) {
+        velocityXP *= 2;
+        velocityYP *= 2;
+        pizza2.x = Math.random() * (boardWidth - pizzaWidth);
+        pizza2.y = Math.random() * (boardHeight - pizzaHeight);
     }
 
     // Draw score
@@ -176,36 +253,36 @@ function keyPressed(event) {
     switch (event.key) {
         case "w":
             //Move upwards
-            velocityY = -1.1;
+            velocityY = -0.5;
             break;
         
         case "s":
             //Move downwards
-            velocityY = 1.1;
+            velocityY = 0.5;
             break;
 
         case "a":
-            velocityX = -1.1;
+            velocityX = -0.5;
             break;
 
         case "d":
-            velocityX = 1.1;
+            velocityX = 0.5;
             break;
         
         case "ArrowUp":
-            velocityYP = -1;
+            velocityYP = -0.3;
             break;
 
         case "ArrowDown":
-            velocityYP = 1;
+            velocityYP = 0.3;
             break;
 
         case "ArrowLeft":
-            velocityXP = -1;
+            velocityXP = -0.3;
             break;
 
         case "ArrowRight":
-            velocityXP = 1;
+            velocityXP = 0.3;
             break;
         
         case "r":
