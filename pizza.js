@@ -171,7 +171,7 @@ function update() {
     requestAnimationFrame(update);
     if (gameOver) {
         bgMusic.pause()
-        let mySound = new Audio('/music/game_over2.wav')
+        let mySound = new Audio('/music/game_over3.wav')
         mySound.play()
         return;
     }
