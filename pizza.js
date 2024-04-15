@@ -43,8 +43,8 @@ let randomNumber = Math.floor(Math.random() * 100)
 let pizzaArray = ["/photos/pizza1.png", "/photos/pizza2.png", "/photos/pizza3.png"]; 
 let pizzaHeight = 70;
 let pizzaWidth = 70;
-let pizzaX = boardWidth/Math.floor(Math.random() * 50);
-let pizzaY = boardHeight/Math.floor(Math.random() * 100);
+let pizzaX = Math.floor(Math.random() * boardWidth);
+let pizzaY = Math.floor(Math.random() * boardHeight);
 let pizzaImg;
 
 let pizza = {
@@ -55,8 +55,8 @@ let pizza = {
 }
 //Pizza 1
 let pizza1Array = ["/photos/pizza4.png", "/photos/pizza5.png", "/photos/pizza6.png"]
-let pizza1X = boardWidth/Math.floor(Math.random() * 50);
-let pizza1Y = boardHeight/Math.floor(Math.random() * 100);
+let pizza1X = Math.floor(Math.random() * boardWidth);
+let pizza1Y = Math.floor(Math.random() * boardHeight);
 let pizza1 = {
     x : pizza1X,
     y : pizza1Y,
@@ -67,8 +67,8 @@ let pizza1Img;
 
 // Pizza 2
 let pizza2Array = ["/photos/pizza7.png"]
-let pizza2X = boardWidth/Math.floor(Math.random() * 50);
-let pizza2Y = boardHeight/Math.floor(Math.random() * 100);
+let pizza2X = Math.floor(Math.random() * boardWidth);
+let pizza2Y = Math.floor(Math.random() * boardHeight);
 let pizza2 = {
     x : pizza2X,
     y : pizza2Y,
@@ -155,15 +155,15 @@ window.onload = function(){
     pizza2Spawn()
 
 
-    function stopMoving() {
-            velocityY = 0;
-            velocityX = 0;
-            velocityYP = 0;
-            velocityXP = 0;
-    }
+    // function stopMoving() {
+    //         velocityY = 0;
+    //         velocityX = 0;
+    //         velocityYP = 0;
+    //         velocityXP = 0;
+    // }
     requestAnimationFrame(update);
     document.addEventListener('keydown', keyPressed);
-    document.addEventListener('keyup', stopMoving);
+    // document.addEventListener('keyup', stopMoving);
 
 }
 
@@ -171,8 +171,8 @@ function update() {
     requestAnimationFrame(update);
     if (gameOver) {
         bgMusic.pause()
-        let mySound = new Audio('/music/game_over3.wav')
-        mySound.play()
+        // let mySound = new Audio('/music/game_over3.mp3')
+        // mySound.play()
         return;
     }
     context.clearRect(0, 0, board.width, board.height);
