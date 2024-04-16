@@ -55,8 +55,8 @@ let upLeft = {
 }
 
 //Freddy
-let freddyWidth = 80;
-let freddyHeight = 120;
+let freddyWidth = 70;
+let freddyHeight = 105;
 let freddyX = boardWidth/18;
 let freddyY = boardHeight/2
 let freddyImg;
@@ -70,8 +70,8 @@ let freddy = {
 }
 
 //Plum Freddy
-let freddyPWidth = 80;
-let freddyPHeight = 120;
+let freddyPWidth = 70;
+let freddyPHeight = 105;
 let freddyPX = boardWidth/1.1;
 let freddyPY = boardHeight/2
 let freddyPImg;
