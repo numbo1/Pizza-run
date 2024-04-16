@@ -7,11 +7,21 @@ let context;
 //sound
 let bgMusic = new Audio('/music/music.mp3');
 
+//Walls
+
+//left wall
+let leftWallImg;
+let leftWall = {
+    x : 0,
+    y : 0,
+    width : 100,
+    height : 500
+}
 
 
 //Freddy
-let freddyWidth = 100;
-let freddyHeight = 150;
+let freddyWidth = 80;
+let freddyHeight = 120;
 let freddyX = boardWidth/18;
 let freddyY = boardHeight/2
 let freddyImg;
@@ -25,8 +35,8 @@ let freddy = {
 }
 
 //Plum Freddy
-let freddyPWidth = 100;
-let freddyPHeight = 150;
+let freddyPWidth = 80;
+let freddyPHeight = 120;
 let freddyPX = boardWidth/1.1;
 let freddyPY = boardHeight/2
 let freddyPImg;
@@ -41,8 +51,8 @@ let freddyP = {
 //Pizzas
 let randomNumber = Math.floor(Math.random() * 100)
 let pizzaArray = ["/photos/pizza1.png", "/photos/pizza2.png", "/photos/pizza3.png"]; 
-let pizzaHeight = 70;
-let pizzaWidth = 70;
+let pizzaHeight = 60;
+let pizzaWidth = 60;
 let pizzaX = Math.floor(Math.random() * boardWidth);
 let pizzaY = Math.floor(Math.random() * boardHeight);
 let pizzaImg;
@@ -60,8 +70,8 @@ let pizza1Y = Math.floor(Math.random() * boardHeight);
 let pizza1 = {
     x : pizza1X,
     y : pizza1Y,
-    width : 50,
-    height : 50
+    width : 40,
+    height : 40
 }
 let pizza1Img;
 
@@ -100,6 +110,7 @@ let velocityY = 0;
 let velocityXP = 0;
 let velocityYP = 0;
 let gameOver = false;
+let win = false;
 let score = 0;
 
 window.onload = function(){
@@ -109,6 +120,15 @@ window.onload = function(){
     context = board.getContext("2d"); //Drawing on the canvas
     bgMusic.play()
     //load the images
+    //Walls
+    //left wall
+    leftWallImg = new Image();
+    leftWallImg.src = "/photos/5x1_xxl_wall.png";
+    leftWallImg.onload = function(){
+        context.drawImage(leftWallImg, leftWall.x, leftWall.y, leftWall.width, leftWall.height);
+
+    }
+
     //Freddy
     freddyImg = new Image();
     freddyImg.src = "/photos/freddy.png";
@@ -175,6 +195,11 @@ function update() {
         // mySound.play()
         return;
     }
+
+    if (win) {
+        bgMusic.pause()
+        return;
+    }
     context.clearRect(0, 0, board.width, board.height);
 
     //Freddy
@@ -219,6 +244,7 @@ function update() {
     if (detectCollision(freddyP, freddy)) {
         gameOver = true;
     } else if (detectCollision(freddyP, pizza)) {
+        score -= 1;
         pizza.x = Math.random() * (boardWidth - pizzaWidth);
         pizza.y = Math.random() * (boardHeight - pizzaHeight);
     } else if (detectCollision(freddyP, pizza1)) {
@@ -236,6 +262,20 @@ function update() {
     context.fillStyle = "maroon";
     context.fillText(score, 40, 80);
 
+    if (score >= 20) {
+        win = true;
+        context.clearRect(0, 0, board.width, board.height);
+        context.font = "100px Arial"
+        document.getElementById("board").style.backgroundImage = "url('black.jpg')"
+        context.fillStyle = "#90EE90";
+        context.textAlign = "center";
+        context.fillText("You win!", boardWidth/2, 400);
+        context.fillStyle = "white";
+        context.fillText("Press R to restart",boardWidth/2, 500);
+    } else if (score <= -5) {
+        gameOver = true;
+    }
+
     if (gameOver) {
         context.clearRect(0, 0, board.width, board.height);
         context.font = "100px Arial"
@@ -245,6 +285,7 @@ function update() {
         context.fillText("GAME OVER", boardWidth/2, 400);
         context.fillText("Press R to restart",boardWidth/2, 500);
     }
+
 }
 
 
@@ -253,20 +294,20 @@ function keyPressed(event) {
     switch (event.key) {
         case "w":
             //Move upwards
-            velocityY = -0.5;
+            velocityY = -0.6;
             break;
         
         case "s":
             //Move downwards
-            velocityY = 0.5;
+            velocityY = 0.6;
             break;
 
         case "a":
-            velocityX = -0.5;
+            velocityX = -0.6;
             break;
 
         case "d":
-            velocityX = 0.5;
+            velocityX = 0.6;
             break;
         
         case "ArrowUp":
