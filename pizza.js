@@ -54,10 +54,37 @@ let upLeft = {
     height : 100
 }
 
+//corner up right
+let upRightImg;
+let upRight = {
+    x : boardWidth - 100,
+    y : 0,
+    width : 100,
+    height : 100
+}
+
+//corner bottom left
+let bottomLeftImg;
+let bottomLeft = {
+    x : 0,
+    y : boardHeight,
+    width : 100,
+    height : 100
+}
+
+//corner bottom right
+let bottomRightImg;
+let bottomRight = {
+    x : boardWidth - 100,
+    y : boardHeight,
+    width : 100,
+    height : 100
+}
+
 //Freddy
 let freddyWidth = 70;
 let freddyHeight = 105;
-let freddyX = boardWidth/18;
+let freddyX = boardWidth/12;
 let freddyY = boardHeight/2
 let freddyImg;
 
@@ -72,7 +99,7 @@ let freddy = {
 //Plum Freddy
 let freddyPWidth = 70;
 let freddyPHeight = 105;
-let freddyPX = boardWidth/1.1;
+let freddyPX = boardWidth/1.15;
 let freddyPY = boardHeight/2
 let freddyPImg;
 
@@ -168,7 +195,7 @@ window.onload = function(){
 
     //left wall
     leftWallImg = new Image();
-    leftWallImg.src = "/photos/4x1_xl_wall.png";
+    leftWallImg.src = "/photos/5x1_xxl_wall.png";
     leftWallImg.onload = function(){
         context.drawImage(leftWallImg, leftWall.x, leftWall.y, leftWall.width, leftWall.height);
 
@@ -176,7 +203,7 @@ window.onload = function(){
 
     //right wall
     rightWallImg = new Image();
-    rightWallImg.src = "/photos/4x1_xl_right_wall.png";
+    rightWallImg.src = "/photos/5x1_xxl_right_wall.png";
     rightWallImg.onload = function(){
         context.drawImage(rightWallImg, rightWall.x, rightWall.y, rightWall.width, rightWall.height);
 
@@ -184,7 +211,7 @@ window.onload = function(){
 
     //top wall
     topWallImg = new Image();
-    topWallImg.src = "/photos/1x9_top.png";
+    topWallImg.src = "/photos/1x10_top.png";
     topWallImg.onload = function(){
         context.drawImage(topWallImg, topWall.x, topWall.y, topWall.width, topWall.height);
 
@@ -192,7 +219,7 @@ window.onload = function(){
 
     //bottom wall
     bottomWallImg = new Image();
-    bottomWallImg.src = "/photos/1x9_bottom.png";
+    bottomWallImg.src = "/photos/1x10_bottom.png";
     bottomWallImg.onload = function(){
         context.drawImage(bottomWallImg, bottomWall.x, bottomWall.y, bottomWall.width, bottomWall.height);
 
@@ -205,6 +232,24 @@ window.onload = function(){
         context.drawImage(upLeftImg, upLeft.x, upLeft.y, upLeft.width, upLeft.height);
 
     }
+
+    //upRight
+    upRightImg = new Image();
+    upRightImg.src = "/photos/1x1_right_top.png";
+    upRightImg.onload = function(){
+        context.drawImage(upRightImg, upRight.x, upRight.y, upRight.width, upRight.height);
+
+    }
+
+    //bottomLeft
+    bottomLeftImg = new Image();
+    bottomLeftImg.src = "/photos/1x1_right_top.png";
+    bottomLeftImg.onload = function(){
+        context.drawImage(bottomLeftImg, bottomLeft.x, bottomLeft.y, bottomLeft.width, bottomLeft.height);
+
+    }
+
+    //bottomRight
 
     //Freddy
     freddyImg = new Image();
@@ -287,6 +332,8 @@ function update() {
 
     //corners
     context.drawImage(upLeftImg, upLeft.x, upLeft.y, upLeft.width, upLeft.height);
+    context.drawImage(upRightImg, upRight.x, upRight.y, upRight.width, upRight.height);
+    context.drawImage(bottomLeftImg, bottomLeft.x, bottomLeft.y, bottomLeft.width, bottomLeft.height);
 
 
     //Freddy
