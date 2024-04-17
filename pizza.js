@@ -67,7 +67,7 @@ let upRight = {
 let bottomLeftImg;
 let bottomLeft = {
     x : 0,
-    y : boardHeight,
+    y : boardHeight - 100,
     width : 100,
     height : 100
 }
@@ -76,7 +76,7 @@ let bottomLeft = {
 let bottomRightImg;
 let bottomRight = {
     x : boardWidth - 100,
-    y : boardHeight,
+    y : boardHeight - 100,
     width : 100,
     height : 100
 }
@@ -243,13 +243,19 @@ window.onload = function(){
 
     //bottomLeft
     bottomLeftImg = new Image();
-    bottomLeftImg.src = "/photos/1x1_right_top.png";
+    bottomLeftImg.src = "/photos/1x1_left_bottom.png";
     bottomLeftImg.onload = function(){
         context.drawImage(bottomLeftImg, bottomLeft.x, bottomLeft.y, bottomLeft.width, bottomLeft.height);
 
     }
 
     //bottomRight
+    bottomRightImg = new Image();
+    bottomRightImg.src = "/photos/1x1_right_bottom.png";
+    bottomRightImg.onload = function(){
+        context.drawImage(bottomRightImg, bottomRight.x, bottomRight.y, bottomRight.width, bottomRight.height);
+
+    }
 
     //Freddy
     freddyImg = new Image();
@@ -305,7 +311,7 @@ window.onload = function(){
     // }
     requestAnimationFrame(update);
     document.addEventListener('keydown', keyPressed);
-    // document.addEventListener('keyup', stopMoving);
+    // document.addEventListener('Space', stopMoving);
 
 }
 
@@ -334,6 +340,7 @@ function update() {
     context.drawImage(upLeftImg, upLeft.x, upLeft.y, upLeft.width, upLeft.height);
     context.drawImage(upRightImg, upRight.x, upRight.y, upRight.width, upRight.height);
     context.drawImage(bottomLeftImg, bottomLeft.x, bottomLeft.y, bottomLeft.width, bottomLeft.height);
+    context.drawImage(bottomRightImg, bottomRight.x, bottomRight.y, bottomRight.width, bottomRight.height);
 
 
     //Freddy
@@ -382,8 +389,8 @@ function update() {
         pizza1.x = pizzaX();
         pizza1.y = pizzaY();
     } else if (detectCollision(freddyP, pizza2)) {
-        velocityXP *= 2;
-        velocityYP *= 2;
+        velocityXP *= 1.5;
+        velocityYP *= 1.5;
         pizza2.x = pizzaX();
         pizza2.y = pizzaY();
     }
@@ -391,7 +398,7 @@ function update() {
     // Draw score
     context.font = "70px Arial";
     context.fillStyle = "maroon";
-    context.fillText(score, 40, 80);
+    context.fillText(score, 20, 60);
 
     if (score >= 20) {
         win = true;
@@ -457,6 +464,12 @@ function keyPressed(event) {
             velocityXP = 0.3;
             break;
         
+        case "Space":
+            velocityXP = 0;
+            velocityYP = 0;
+            velocityY = 0;
+            velocityX = 0;
+            break;
         case "r":
             location.reload();
         //reset game
